@@ -1,7 +1,7 @@
 version: "2"
 services:
   app:
-    container_name: shoppingcart
+    container_name: shoppingcart-server
     restart: always
     build: .
     ports:
@@ -9,7 +9,7 @@ services:
     links:
       - mongo
   mongo:
-    container_name: shoppingcartmongo
+    container_name: shoppingcart-mongo
     image: mongo
     volumes:
       - ./data:/data/db

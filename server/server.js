@@ -1,28 +1,29 @@
-const express = require('express')
-const app = express()
+const express = require('express');
 const mongoose = require('mongoose');
-const {graphqlHTTP} = require("express-graphql");
-const productSchema = require('./graphql/ProductSchema').ProductSchema;
+const schema = require('./graphql/schema');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const { ApolloServer } = require('apollo-server-express');
 
-mongoose.connect('mongodb://mongo/myappdb', { useNewUrlParser: true, useUnifiedTopology: true}).
-  catch(error => console.log(error));
 
+const url = "mongodb://mongo/shoppingcartdb";
 
-app.set('port', (process.env.PORT || 4000));
-app.listen(app.get('port'),  () =>{
-    console.log("Node app is running at localhost:" + app.get('port'))
+const connect = mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true});
+connect.then((db) => {
+      console.log('Connected correctly to server!');
+}, (err) => {
+      console.log(err);
 });
 
+const server = new ApolloServer({
+      schema: schema
+});
 
+const app = express();
+app.use(bodyParser.json());
+app.use('*', cors());
 
-app.use('/graphql', graphqlHTTP({
-    schema: productSchema,
-    rootValue: global,
-    graphiql: true
-}));
+server.applyMiddleware({ app });
 
-app.get('/', (req, res) => {
-
-    res.send("hello world ! ")
-
-})
+app.listen({ port: 4000 }, () =>
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`));
