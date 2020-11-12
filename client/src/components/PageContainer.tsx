@@ -1,13 +1,17 @@
 import React, { Fragment } from 'react';
-import Header from './Header'
+import CartBadge from './CartBadge'
+import { RouteComponentProps } from '@reach/router';
 
+interface PageContainerProps extends RouteComponentProps {}
 
-export default function PageContainer (props: any) {
+const PageContainer: React.FC<PageContainerProps> = (props) => {
   return (
     <Fragment>
-        <Header></Header>
+        <CartBadge></CartBadge>
         <div>{props.children}</div>
     </Fragment>
   );
 }
+
+export default PageContainer
 

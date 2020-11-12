@@ -1,9 +1,7 @@
 import React, {Fragment, useState} from 'react'
 import { cartItemsVar} from '../cache';
-import { RouteComponentProps } from '@reach/router';
 
-
-const Header: React.FC = () => {
+const CartBadge: React.FC = () => {
 
     const [cartItems, setCartItems] = useState(cartItemsVar())
     //const cartTotalValue = cartItems.map(item => item.product.price).reduce((a, b) => a + b, 0)
@@ -19,4 +17,4 @@ const Header: React.FC = () => {
     )
   }
 
-export default Header
+export default CartBadge
