@@ -10,8 +10,8 @@ const typeDefs = gql `
      availability: Int!
    }
    type Query {
-     getProducts: [Product]
-     getProduct(id: ID!): Product
+     products: [Product]
+     product(id: ID!): Product
    }
    type Mutation {
      addProduct(title: String!, description: String!, price: Float!, availability:Int!): Product
@@ -22,10 +22,10 @@ const typeDefs = gql `
 
 const resolvers = {
     Query: {
-      getProducts: (parent, args) => {
+      products: (parent, args) => {
         return Product.find({});
       },
-      getProduct: (parent, args) => {
+      product: (parent, args) => {
         return Product.findById(args.id);
       }
     },
