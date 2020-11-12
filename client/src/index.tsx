@@ -1,14 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-//import ApolloClient from 'apollo-boost'
-//import { ApolloProvider } from 'react-apollo'
 import {ApolloClient, NormalizedCacheObject, ApolloProvider, InMemoryCache} from '@apollo/client';
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+import { cache } from './cache';
 
 const client: ApolloClient<NormalizedCacheObject>= new ApolloClient({
-  cache: new InMemoryCache(),
+  cache,
   uri: 'http://localhost:4000/graphql'
 })
 

@@ -4,10 +4,11 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: GET_PRODUCT
+// GraphQL query operation: getAllProducts
 // ====================================================
 
-export interface GET_PRODUCT_getProduct {
+export interface getAllProducts_products {
+  [x: string]: any;
   __typename: "Product";
   id: string;
   title: string;
@@ -16,10 +17,6 @@ export interface GET_PRODUCT_getProduct {
   availability: number;
 }
 
-export interface GET_PRODUCT {
-  getProduct: GET_PRODUCT_getProduct | null;
-}
-
-export interface GET_PRODUCTVariables {
-  productId: string;
+export interface getAllProducts {
+  products: (getAllProducts_products | null)[] | null;
 }

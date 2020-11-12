@@ -12,7 +12,7 @@ interface ProductProps{
 const ProductItem: React.FC<ProductProps> = ({product}) => {
     return (
         <ul>
-            <li><Link to={`/product/${product.id}`}> {product.title}</Link></li>
+            <li><Link to={`/product/${product.id}`}>{product.title}</Link></li>
             <li>{product.price}</li>
         </ul>
     )
