@@ -15,7 +15,7 @@ const ProductsList: React.FC<ProductsProps> = () => {
     return (
       <Fragment>
         <h1>Produtos</h1>
-        {data && data.products && data.products.map((product) => (
+        {data && data.products && data.products.map( product => (
           <ProductItem key={product.id} product={product}></ProductItem>
         )
         )}

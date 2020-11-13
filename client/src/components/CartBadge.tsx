@@ -1,18 +1,27 @@
-import React, {Fragment, useState} from 'react'
+import { Link, RouteComponentProps } from '@reach/router';
+import React, {Fragment, useEffect, useState} from 'react'
 import { cartItemsVar} from '../cache';
 
-const CartBadge: React.FC = () => {
+interface CartBadgeProps extends RouteComponentProps { }
+const CartBadge: React.FC<CartBadgeProps> = () => {
 
     const [cartItems, setCartItems] = useState(cartItemsVar())
-    //const cartTotalValue = cartItems.map(item => item.product.price).reduce((a, b) => a + b, 0)
-    const cartTotalValue = cartItems.length
-    const cartTotalItems = cartItems.map(item => item.qtd).reduce((a, b) => a + b, 0)
-    console.log(cartTotalItems)
-    console.log(cartTotalValue)
+
+    useEffect(() => {
+        totalCartQtd()
+        totalCartValue()
+    }, cartItems)
+
+    const totalCartValue = () => cartItems.reduce((acc, item) =>
+    acc + item.qtd * item.product.price, 0)
+
+    const totalCartQtd = () => cartItems.map(item => item.qtd).reduce((a, b) => a + b, 0)
+
     return (
         <Fragment>
-            <div>{cartTotalItems}</div>
-            <div>{cartTotalValue}</div>
+            <Link to='cart'><button>Ir para o carrinho</button></Link>
+            <div>{totalCartQtd()}</div>
+            <div>{totalCartValue()}</div>
         </Fragment>
     )
   }

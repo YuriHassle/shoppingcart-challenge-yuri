@@ -1,7 +1,7 @@
 import { InMemoryCache, Reference } from '@apollo/client';
 import {getAllProducts_products as Product} from './queries/types/getAllProducts'
 
-interface CartItemInterface {
+export interface CartItemInterface {
   product: Product,
   qtd: number
 }

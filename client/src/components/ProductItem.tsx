@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {Link} from '@reach/router'
 
 interface ProductProps{
@@ -11,10 +11,10 @@ interface ProductProps{
 
 const ProductItem: React.FC<ProductProps> = ({product}) => {
     return (
-        <ul>
-            <li><Link to={`/product/${product.id}`}>{product.title}</Link></li>
-            <li>{product.price}</li>
-        </ul>
+        <Fragment>
+            <h3><Link to={`product/${product.id}`}>{product.title}</Link></h3>
+            <p>{product.price}</p>
+        </Fragment>
     )
   }
   
