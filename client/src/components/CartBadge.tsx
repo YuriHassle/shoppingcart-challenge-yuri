@@ -1,9 +1,10 @@
 import { Link, RouteComponentProps } from '@reach/router';
 import React, {Fragment, useEffect, useState} from 'react'
+
 import { cartItemsVar} from '../cache';
 
-interface CartBadgeProps extends RouteComponentProps { }
-const CartBadge: React.FC<CartBadgeProps> = () => {
+const CartBadge: React.FC = props => {
+
 
     const [cartItems, setCartItems] = useState(cartItemsVar())
 
@@ -22,6 +23,7 @@ const CartBadge: React.FC<CartBadgeProps> = () => {
             <Link to='cart'><button>Ir para o carrinho</button></Link>
             <div>{totalCartQtd()}</div>
             <div>{totalCartValue()}</div>
+            {props.children}
         </Fragment>
     )
   }

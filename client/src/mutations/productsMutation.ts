@@ -1,21 +1,9 @@
 import { gql } from '@apollo/client'
 
 
-export const productsQuery = gql`
-  query GET_ALL_PRODUCTS{
-    products{
-      id
-      title
-      description
-      price
-      availability
-    }
-  }
-`
-
-export const productDetailQuery = gql`
-  query GET_PRODUCT($productId: ID!){
-    product(id: $productId){
+export const UPDATE_PRODUCT = gql`
+  mutation updateProduct($id:ID!, $title: String, $description: String, $price: Float, $availability: Int){
+    updateProduct(id: $id, title: $title, description: $description, price: $price, availability: $availability){
       id
       title
       description

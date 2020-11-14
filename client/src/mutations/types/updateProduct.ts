@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: getAllProducts
+// GraphQL mutation operation: updateProduct
 // ====================================================
 
-export interface getAllProducts_products {
+export interface updateProduct_updateProduct {
   __typename: "Product";
   id: string;
   title: string;
@@ -16,6 +16,14 @@ export interface getAllProducts_products {
   availability: number;
 }
 
-export interface getAllProducts {
-  products: (getAllProducts_products | null)[] | null;
+export interface updateProduct {
+  updateProduct: updateProduct_updateProduct | null;
+}
+
+export interface updateProductVariables {
+  id: string;
+  title?: string | null;
+  description?: string | null;
+  price?: number | null;
+  availability?: number | null;
 }
