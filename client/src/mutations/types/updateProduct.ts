@@ -14,6 +14,7 @@ export interface updateProduct_updateProduct {
   description: string;
   price: number;
   availability: number;
+  image: string;
 }
 
 export interface updateProduct {
@@ -26,4 +27,5 @@ export interface updateProductVariables {
   description?: string | null;
   price?: number | null;
   availability?: number | null;
+  image?: string | null;
 }

@@ -9,6 +9,7 @@ export const GET_ALL_PRODUCTS = gql`
       description
       price
       availability
+      image
     }
   }
 `
@@ -21,6 +22,7 @@ export const GET_PRODUCT_BY_ID = gql`
       description
       price
       availability
+      image
     }
   }
 `

@@ -1,5 +1,6 @@
-import { Link, RouteComponentProps } from '@reach/router';
+import { Link} from '@reach/router';
 import React, {Fragment, useEffect, useState} from 'react'
+import {FaShoppingCart, FaHome} from 'react-icons/fa'
 
 import { cartItemsVar} from '../cache';
 
@@ -20,10 +21,19 @@ const CartBadge: React.FC = props => {
 
     return (
         <Fragment>
-            <Link to='cart'><button>Ir para o carrinho</button></Link>
-            <div>{totalCartQtd()}</div>
-            <div>{totalCartValue()}</div>
-            {props.children}
+            <header>
+                <Link to='/'>
+                    <FaHome size={40} color={'#4b0e26e5'}/>
+                </Link>
+                <Link to='/cart'>
+                    <FaShoppingCart size={40} color={'#4b0e26e5'}/>
+                </Link>
+                <div>{totalCartQtd()}</div>
+                <div>{totalCartValue()}</div>
+            </header>
+            <div className="page-container">
+                {props.children}
+            </div>
         </Fragment>
     )
   }

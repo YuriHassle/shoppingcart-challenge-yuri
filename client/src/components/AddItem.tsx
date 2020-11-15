@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { cartItemsVar } from '../cache';
 import { RouteComponentProps } from '@reach/router'
 import { getAllProducts_products as Product } from '../queries/types/getAllProducts'
@@ -7,13 +7,14 @@ import { UPDATE_PRODUCT } from '../mutations/productsMutation';
 import { updateProduct } from '../mutations/types/updateProduct';
 import { productById } from '../queries/types/productById';
 import { GET_PRODUCT_BY_ID } from '../queries/productsQuery';
-
+import { FaPlus } from 'react-icons/fa';
 
 interface ProductDetailProps extends RouteComponentProps {
     product?: Product,
+    setProductMessage?: any
 }
 
-const AdicionarItem: React.FC<ProductDetailProps> = ({ product }) => {
+const AdicionarItem: React.FC<ProductDetailProps> = ({ product, setProductMessage}) => {
 
 
     const [updateProduct] = useMutation<updateProduct>(UPDATE_PRODUCT)
@@ -53,14 +54,15 @@ const AdicionarItem: React.FC<ProductDetailProps> = ({ product }) => {
                 })
 
             } else {
-                alert('Esse produto não está mais em estoque')
+                setProductMessage('Essa há mais lugares para essa viagem :(')
             }
         })
     }
 
     return (
-        <button onClick={handleAddItem}>
-            Adicionar ao Carrinho
+        <button className='btn btn-dark mt-3' onClick={handleAddItem}>
+            <FaPlus size={15} color={'#ffffff'} ></FaPlus>
+            &nbsp; Adicionar ao carrinho
         </button>
     )
 }

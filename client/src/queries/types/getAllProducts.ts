@@ -14,6 +14,7 @@ export interface getAllProducts_products {
   description: string;
   price: number;
   availability: number;
+  image: string;
 }
 
 export interface getAllProducts {

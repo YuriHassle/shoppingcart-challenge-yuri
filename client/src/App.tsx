@@ -1,31 +1,32 @@
 import React, { Fragment, Component } from 'react'
 import ProductsList from './components/ProductsList'
-import {Router} from '@reach/router'
+import { Router } from '@reach/router'
 import ProductDetail from './components/ProductDetail'
 import CartBadge from './components/CartBadge'
 import Cart from './components/Cart'
 import CheckoutOrder from './components/CheckoutOrder'
-import {cartItemsVar} from './cache'
+import { cartItemsVar } from './cache'
 
 const CartContext = React.createContext({})
 
-class App extends Component {
-  render() {
+const App : React.FC = () => {
+
     return (
+
       <Fragment>
         <CartContext.Provider value={cartItemsVar()}>
           <CartBadge>
-          <Router primary={false} component={Fragment}>
+            <Router primary={false} component={Fragment}>
               <ProductsList path="/" />
-              <ProductDetail path="product/:productId"/>
-              <Cart path='cart'/>
-              <CheckoutOrder path='checkout'/>
-          </Router>
+              <ProductDetail path="product/:productId" />
+              <Cart path='cart' />
+              <CheckoutOrder path='checkout' />
+            </Router>
           </CartBadge>
         </CartContext.Provider>
       </Fragment>
     )
-  }
+  
 }
 
 export default App

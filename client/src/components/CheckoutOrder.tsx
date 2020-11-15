@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { RouteComponentProps } from '@reach/router';
+import { Link, RouteComponentProps } from '@reach/router';
 import React, { Fragment, useState } from 'react'
+import { FaHome, FaShoppingBag } from 'react-icons/fa';
 import { CartItemInterface, cartItemsVar } from '../cache';
 import { SAVE_ORDER } from '../mutations/ordersMutation';
 import { saveOrder } from '../mutations/types/saveOrder';
@@ -71,16 +72,29 @@ const CheckoutOrder: React.FC<CheckoutOrderProps> = ({ location }) => {
 
     return (
         <Fragment>
-            <h1>Pagamento</h1>
-            <p>Total do pedido: {totalOrder}</p>
-            <label>Informe o número do cartão de crédito:</label>
-            <input
-                placeholder='Apenas Números'
-                type="text"
-                onChange={(e) => setCreditCardNumber(e.target.value)}
-            />
-            <button id='checkoutButton' onClick={checkout}>Efetuar Pedido</button>
-            <div>{orderMessage}</div>
+            <h1 className='title-list'>Pagamento</h1>
+            <p className='subtile'>
+                Total do pedido: <span>{totalOrder.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
+            </p>
+            <div className="container-checkout">
+                <p>Informe o número do cartão de crédito:</p>
+                <input
+                    placeholder='Apenas números'
+                    type="text"
+                    onChange={(e) => setCreditCardNumber(e.target.value)}
+                />
+                <button className='btn btn-dark mt-5' id='checkoutButton' onClick={checkout}>
+                    <FaShoppingBag size={15} color={'#FFFFFF'} ></FaShoppingBag>
+                    &nbsp; Efetuar Pedido
+                </button>
+                <Link to='/'>
+                    <button className='btn btn-info mt-2'>
+                        <FaHome size={15} color={'#FFFFFF'} ></FaHome>
+                        &nbsp;Voltar para a página inicial
+                    </button>
+                </Link>
+            </div>
+            <p className='message-alert'>{orderMessage}</p>
         </Fragment>
     )
 }

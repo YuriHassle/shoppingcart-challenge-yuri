@@ -14,6 +14,7 @@ export interface productById_product {
   description: string;
   price: number;
   availability: number;
+  image: string;
 }
 
 export interface productById {

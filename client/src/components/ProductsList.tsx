@@ -14,7 +14,8 @@ const ProductsList: React.FC<ProductsProps> = () => {
     if (error || !data) return <p>ERROR</p>;
     return (
       <Fragment>
-        <h1>Produtos</h1>
+        <h1>Bem-vindo à loja <span>Viagem Fantástica</span> :)</h1>
+        <p>Aqui nós levamos você para uma jornada mágica até os destinos mais épicos imagináveis</p>
         {data.products && data.products.map( product => (
           <ProductItem key={product.id} product={product}></ProductItem>
         )
