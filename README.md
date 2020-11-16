@@ -4,12 +4,15 @@ A loja fantástica é uma agência de viagens que te leva para os destinos mais 
 
 Aplicação desenvolvida para o desafio técnico da **Jusbrasil**.
 
+*Para efetuar uma compra na loja é necessário informar o n. de cartão de crédito:* ***123456789***
+
 ## Tecnologias
 
 ### API
 -   Node.js + Express.js
 -   Mongodb + Mongoose
 -   GraphQL + Apollo
+-	Docker Compose
 
 ### Client
 -   React.js + TypeScript
@@ -39,7 +42,7 @@ Nesta página, basta dar um nome qualquer para a conexão e digitar no campo **c
 
 
 ### Client
-Com o servidor rodando e estando no diretório raiz do projeto:
+No diretório raiz do projeto e com o servidor rodando:
 
 `$ cd client`
 
