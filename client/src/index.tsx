@@ -1,23 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {ApolloClient, NormalizedCacheObject, ApolloProvider} from '@apollo/client';
+import {ApolloClient, NormalizedCacheObject, ApolloProvider, InMemoryCache} from '@apollo/client';
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import { cache } from './cache';
-import { persistCache } from 'apollo3-cache-persist';
-
-const init = async () => {
-  await persistCache({
-    cache,
-    storage: window.localStorage,
-  })
-}
-init()
-
 
 const client: ApolloClient<NormalizedCacheObject>= new ApolloClient({
-  cache,
+  cache: new InMemoryCache({}),
   uri: 'http://localhost:4000/graphql'
 })
 

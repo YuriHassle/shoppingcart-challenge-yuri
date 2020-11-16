@@ -1,5 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
-import { cartItemsVar } from '../cache';
+import React, {useContext } from 'react'
 import { RouteComponentProps } from '@reach/router'
 import { getAllProducts_products as Product } from '../queries/types/getAllProducts'
 import { useMutation, useQuery } from '@apollo/client';
@@ -8,18 +7,19 @@ import { updateProduct } from '../mutations/types/updateProduct';
 import { productById } from '../queries/types/productById';
 import { GET_PRODUCT_BY_ID } from '../queries/productsQuery';
 import { FaPlus } from 'react-icons/fa';
+import CartContext from '../CartContext';
 
 interface ProductDetailProps extends RouteComponentProps {
     product?: Product,
-    setProductMessage?: any
+    setProductMessage?: any,
 }
 
-const AdicionarItem: React.FC<ProductDetailProps> = ({ product, setProductMessage}) => {
+const AdicionarItem: React.FC<ProductDetailProps> = ({ product, setProductMessage }) => {
 
-
+    const { cartItems, setCartItems } = useContext(CartContext)
     const [updateProduct] = useMutation<updateProduct>(UPDATE_PRODUCT)
 
-    const { loading,  refetch } = useQuery<productById>(GET_PRODUCT_BY_ID, {
+    const { loading, refetch } = useQuery<productById>(GET_PRODUCT_BY_ID, {
         nextFetchPolicy: 'network-only',
         variables: { productId: product.id }
     })
@@ -30,7 +30,7 @@ const AdicionarItem: React.FC<ProductDetailProps> = ({ product, setProductMessag
 
         if (!product) return
 
-        refetch().then(({data}) => {
+        refetch().then(({ data }) => {
             if (data.product.availability > 0) {
 
                 const variables = {
@@ -40,16 +40,15 @@ const AdicionarItem: React.FC<ProductDetailProps> = ({ product, setProductMessag
                     }
                 }
                 updateProduct(variables).then(() => {
-                    const cartItems = cartItemsVar();
+
                     const isInCart = cartItems.some(({ product: { id } }) => id == product.id)
-                    cartItemsVar(
-                        isInCart
-                            ? cartItems.map(item =>
-                                item.product.id == product.id
-                                    ? { ...item, qtd: ++item.qtd }
-                                    : item
-                            )
-                            : [...cartItems, { product: product, qtd: 1 }]
+                    setCartItems(isInCart
+                        ? cartItems.map(item =>
+                            item.product.id == product.id
+                                ? { ...item, qtd: ++item.qtd }
+                                : item
+                        )
+                        : [...cartItems, { product: product, qtd: 1 }]
                     )
                 })
 

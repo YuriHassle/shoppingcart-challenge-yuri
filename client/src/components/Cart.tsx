@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { Link, RouteComponentProps } from '@reach/router';
-import React, { Fragment, useEffect, useState } from 'react'
-import { cartItemsVar } from '../cache';
+import React, { Fragment, useContext, useState } from 'react'
 import { UPDATE_PRODUCT } from '../mutations/productsMutation';
 import { updateProduct } from '../mutations/types/updateProduct';
 import { GET_PRODUCT_BY_ID } from '../queries/productsQuery';
 import { productById } from '../queries/types/productById';
-import { FaPlus, FaMinus, FaTrashAlt, FaHome, FaCashRegister, FaCreditCard } from 'react-icons/fa'
+import { FaPlus, FaMinus, FaTrashAlt, FaHome, FaCreditCard } from 'react-icons/fa'
+import CartContext from '../CartContext';
 
 
 
@@ -14,28 +14,24 @@ interface CartProps extends RouteComponentProps { }
 
 const Cart: React.FC<CartProps> = () => {
 
-        
+
     const [cartMessage, setCartMessage] = useState('')
-    const [cartItems, setCartItems] = useState([])
-    
-    useEffect(()=>{
-        setCartItems(cartItemsVar)
-        if(cartItems.length>0){
-            return console.log('entrou')
-        }
-    },cartItems)
+    const { cartItems, setCartItems } = useContext(CartContext)
+    const [emptyCart, setEmptyCart] = useState(!(cartItems.length > 0))
 
     const [updateProduct] = useMutation<updateProduct>(UPDATE_PRODUCT)
     const { loading, fetchMore } = useQuery<productById>(GET_PRODUCT_BY_ID, {
         nextFetchPolicy: 'no-cache',
-        variables: { productId: '5fab10eca4a3520014582c05' }
+        variables: { productId: '' }
     })
     if (loading) return <p>Loading</p>
+
 
     const totalCart = () => cartItems.reduce((acc, item) =>
         acc + item.qtd * item.product.price, 0)
 
-    const updateAvailability = (productId: String, currentAvailability: number, qtd: number) => {
+
+    const updateAvailability = (productId: String, currentAvailability: number, qtd: number, op: string) => {
 
         let variables = {
             variables: {
@@ -45,12 +41,12 @@ const Cart: React.FC<CartProps> = () => {
         }
 
         updateProduct(variables).then(() => {
-            if (qtd > 1) {
-                cartItemsVar(
-                    cartItems.filter(item => item.product.id != productId)
-                )
+            if (op == 'REMOVE') {
+                const newCart = cartItems.filter(item => item.product.id != productId)
+                setCartItems(newCart)
+                setEmptyCart(!(newCart.length > 0))
             } else {
-                cartItemsVar(
+                setCartItems(
                     cartItems.map(item => {
                         if (item.product.id === productId) {
                             return { ...item, qtd: item.qtd + qtd }
@@ -58,9 +54,6 @@ const Cart: React.FC<CartProps> = () => {
                     })
                 )
             }
-
-            setCartItems(cartItemsVar())
-            totalCart()
         })
     }
 
@@ -78,25 +71,25 @@ const Cart: React.FC<CartProps> = () => {
         switch (operation) {
             case 'INCREMENT':
                 data.product.availability > 0
-                    ? updateAvailability(productId, data.product.availability, 1)
+                    ? updateAvailability(productId, data.product.availability, 1, 'INCREMENT')
                     : setCartMessage('Essa há mais lugares para essa viagem :(')
                 break
 
             case 'DECREMENT':
                 cartItems.find(item => item.product.id === productId).qtd > 1
-                    ? updateAvailability(productId, data.product.availability, (-1))
+                    ? updateAvailability(productId, data.product.availability, (-1), 'DECREMENT')
                     : setCartMessage('Você precisa ter ao menos um item no carrinho.')
                 break
 
             case 'REMOVE':
                 const qtd = cartItems.find(item => item.product.id === productId).qtd
-                updateAvailability(productId, data.product.availability, (-qtd))
+                updateAvailability(productId, data.product.availability, (-qtd), 'REMOVE')
         }
     }
 
-    const teste = ()=>{console.log(cartItems)}
     return (
         <Fragment>
+            {cartItems && cartItems.length > 0 ? true : (<p className='message-alert'>Seu carrinho está vazio :/</p>)}
             {cartItems && cartItems.map(item => (
                 <div className="container-cart-item" key={item.product.id}>
                     <Link to={`/product/${item.product.id}`}>
@@ -126,9 +119,9 @@ const Cart: React.FC<CartProps> = () => {
             <p className='price-list'>{totalCart().toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p>
             <Link
                 to={'/checkout'}
-                state={{ totalOrder: totalCart(), cartItems: cartItems }}
+                state={{ totalOrder: totalCart()}}
             >
-                <button disabled className='btn btn-dark mt-3'>
+                <button disabled={emptyCart} className='btn btn-dark mt-3'>
                     <FaCreditCard size={15} color={'#FFFFFF'} ></FaCreditCard>
                     &nbsp; Ir para o pagamento
                 </button>
@@ -140,7 +133,6 @@ const Cart: React.FC<CartProps> = () => {
                     </button>
             </Link>
             <p className='message-alert'>{cartMessage}</p>
-            <button onClick={teste}>TESTEEE</button>
         </Fragment>
     )
 }

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useContext, useState } from 'react'
 import { GET_PRODUCT_BY_ID } from '../queries/productsQuery'
 import { productById } from '../queries/types/productById'
 import { Link, RouteComponentProps } from '@reach/router';
@@ -14,6 +14,8 @@ interface ProductDetailProps extends RouteComponentProps {
 const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {
 
     const [productMessage, setProductMessage] = useState('')
+
+
     const { loading, error, data } = useQuery<productById>(GET_PRODUCT_BY_ID, {
         fetchPolicy: 'network-only',
         variables: { productId }
@@ -24,7 +26,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {
 
     const { product } = data
 
-    const handleState = (message: string) => {
+    const handleMessageState = (message: string) => {
         setProductMessage(message)
     }
 
@@ -39,7 +41,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {
                 <p>{product && product.description}</p>
                 <p>Quantidade disponível: <span>{product && product.availability}</span></p>
             </div>
-            <AddItem product={product} setProductMessage={handleState}></AddItem>
+            <AddItem product={product} setProductMessage={handleMessageState}></AddItem>
             <Link to='/cart'>
                 <button className='btn btn-info mt-2'>
                     <FaShoppingCart size={15} color={'#FFFFFF'} ></FaShoppingCart>

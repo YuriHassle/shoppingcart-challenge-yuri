@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { Link, RouteComponentProps } from '@reach/router';
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useContext, useState } from 'react'
 import { FaHome, FaShoppingBag } from 'react-icons/fa';
-import { CartItemInterface, cartItemsVar } from '../cache';
+import CartContext, { CartItemInterface } from '../CartContext';
 import { SAVE_ORDER } from '../mutations/ordersMutation';
 import { saveOrder } from '../mutations/types/saveOrder';
 import { GET_ALL_PRODUCTS } from '../queries/productsQuery';
@@ -14,8 +14,9 @@ interface CheckoutOrderProps extends RouteComponentProps {
 
 const CheckoutOrder: React.FC<CheckoutOrderProps> = ({ location }) => {
 
+    const { cartItems, setCartItems } = useContext(CartContext)
     const [creditCardNumber, setCreditCardNumber] = useState('')
-    let { cartItems, totalOrder } = location.state
+    let {totalOrder} = location.state
     const [orderMessage, setOrderMessage] = useState('')
 
     const [addOrder] = useMutation<saveOrder>(SAVE_ORDER)
@@ -58,8 +59,7 @@ const CheckoutOrder: React.FC<CheckoutOrderProps> = ({ location }) => {
                         }
                     }
                     addOrder(variables).then(() => {
-                        cartItemsVar([])
-                        cartItems = []
+                        setCartItems([])
                         setOrderMessage('Compra realizada com sucesso!')
                         let el = document.getElementById("checkoutButton") as HTMLButtonElement
                         el.disabled = true
