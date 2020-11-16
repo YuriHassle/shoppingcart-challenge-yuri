@@ -4,16 +4,22 @@ const schema = require('./graphql/schema');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { ApolloServer } = require('apollo-server-express');
+const PopulateProduct = require('./populateProduct.js')
 
 
 const url = "mongodb://mongo/shoppingcartdb";
 
-const connect = mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true});
+const connect = mongoose.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+});
+
 connect.then((db) => {
       console.log('Connected correctly to server!');
 }, (err) => {
       console.log(err);
 });
+
 
 const server = new ApolloServer({
       schema: schema
@@ -25,5 +31,8 @@ app.use('*', cors());
 
 server.applyMiddleware({ app });
 
-app.listen({ port: 4000 }, () =>
+//Preenche a colletion 'products' com valores pre-definidos
+PopulateProduct()
+
+app.listen({ port: 4000 }, () => 
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`));

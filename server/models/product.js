@@ -18,11 +18,10 @@ const productSchema = new Schema({
         type:Number,
         required:true
       },
-/*       orders:[{
-        type:mongoose.Schema.Types.ObjectId,
-        required:false,
-        ref: "Order"
-      }], */
+      image:{
+        type:String,
+        required:true
+      },
 }, {
     timestamps: true
 });

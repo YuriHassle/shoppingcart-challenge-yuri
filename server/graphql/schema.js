@@ -9,6 +9,7 @@ const typeDefs = gql `
      description: String!
      price: Float!
      availability: Int!
+     image: String!
    }
    type Order {
      id: ID!
@@ -20,8 +21,8 @@ const typeDefs = gql `
      product(id: ID!): Product
    }
    type Mutation {
-     addProduct(title: String!, description: String!, price: Float!, availability:Int!): Product
-     updateProduct(id: ID!, title: String, description: String, price: Float, availability:Int): Product
+     addProduct(title: String!, description: String!, price: Float!, availability:Int!, image:String!): Product
+     updateProduct(id: ID!, title: String, description: String, price: Float, availability:Int, image:String): Product
      deleteProduct(id: ID!): Product
      addOrder(creditCardNumber: String!, productIds: [ID]!): Order
    }
@@ -43,6 +44,7 @@ const resolvers = {
           description: args.description,
           price: args.price,
           availability: args.availability,
+          image: args.image,
         });
         return product.save();
       },
@@ -58,6 +60,7 @@ const resolvers = {
               description: args.description,
               price: args.price,
               availability: args.availability,
+              image: args.image,
              }
            }, {new: true, omitUndefined:true}, (err, Product) => {
              if (err) {
