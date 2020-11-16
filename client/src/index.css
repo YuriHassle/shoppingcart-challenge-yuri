@@ -13,13 +13,13 @@ body{
 .page-header{
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  align-items: flex-end;
   margin-bottom: 40px;
   width: 85%;
 }
 
 .cart-icon{
-  margin-right: 10px;
+  margin-right: 13px;
 }
 
 .cart-badge-container{
@@ -31,7 +31,12 @@ body{
 }
 
 .cart-badge-details{
-  margin-bottom: 5px;
+  margin-bottom: 4px;
+}
+
+.badge-qtd{
+  margin-left: 15px;
+  font-size: 1rem;
 }
 
 span{

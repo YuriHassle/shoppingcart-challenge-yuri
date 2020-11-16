@@ -19,16 +19,21 @@ const CartBadge: React.FC = () => {
             <header className="page-header">
                 <div className="cart-icon">
                     <Link to='/'>
-                        <FaHome size={45} color={'#4b0e26e5'} />
+                        <FaHome size={47} color={'#4b0e26e5'} />
                     </Link>
                 </div>
                 <div className="cart-icon">
                     <Link to='/cart'>
-                        <FaShoppingCart size={45} color={'#277783f6'} />
+                        <button className="btn btn-secondary">
+                            <FaShoppingCart size={36} color={'#e4e4e4'} />
+                            <span className="badge badge-light badge-pill badge-qtd">
+                                {totalCartQtd()}
+                            </span>
+                        </button>
                     </Link>
                 </div>
                 <div className="cart-badge-container">
-                    <p className='cart-badge-details'>Total de itens: <span>{totalCartQtd()}</span></p>
+                    <p className='cart-badge-details'>Total do carrinho:</p>
                     <p className='cart-badge-details'>
                         <span>{totalCartValue().toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</span>
                     </p>

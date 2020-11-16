@@ -1,12 +1,9 @@
-import { useMutation, useQuery } from '@apollo/client';
 import { Link, RouteComponentProps } from '@reach/router';
 import React, { Fragment, useContext, useState } from 'react'
-import { UPDATE_PRODUCT } from '../mutations/productsMutation';
-import { updateProduct } from '../mutations/types/updateProduct';
-import { GET_PRODUCT_BY_ID } from '../queries/productsQuery';
-import { productById } from '../queries/types/productById';
-import { FaPlus, FaMinus, FaTrashAlt, FaHome, FaCreditCard } from 'react-icons/fa'
+
+import {FaHome, FaCreditCard } from 'react-icons/fa'
 import CartContext from '../CartContext';
+import CartItem from './CartItem';
 
 
 
@@ -19,101 +16,23 @@ const Cart: React.FC<CartProps> = () => {
     const { cartItems, setCartItems } = useContext(CartContext)
     const [emptyCart, setEmptyCart] = useState(!(cartItems.length > 0))
 
-    const [updateProduct] = useMutation<updateProduct>(UPDATE_PRODUCT)
-    const { loading, fetchMore } = useQuery<productById>(GET_PRODUCT_BY_ID, {
-        nextFetchPolicy: 'no-cache',
-        variables: { productId: '' }
-    })
-    if (loading) return <p>Loading</p>
+    const handleMessageState = (message: string) => {
+        setCartMessage(message)
+    }
 
+    const handleEmptyState = (empty: boolean) => {
+        setEmptyCart(empty)
+    }
 
     const totalCart = () => cartItems.reduce((acc, item) =>
         acc + item.qtd * item.product.price, 0)
 
-
-    const updateAvailability = (productId: String, currentAvailability: number, qtd: number, op: string) => {
-
-        let variables = {
-            variables: {
-                id: productId,
-                availability: currentAvailability - qtd
-            }
-        }
-
-        updateProduct(variables).then(() => {
-            if (op == 'REMOVE') {
-                const newCart = cartItems.filter(item => item.product.id != productId)
-                setCartItems(newCart)
-                setEmptyCart(!(newCart.length > 0))
-            } else {
-                setCartItems(
-                    cartItems.map(item => {
-                        if (item.product.id === productId) {
-                            return { ...item, qtd: item.qtd + qtd }
-                        } else return item
-                    })
-                )
-            }
-        })
-    }
-
-    const handleUpdateClick = async (productId: string, operation: String) => {
-        setCartMessage('')
-        const { data } = await fetchMore({
-            variables: {
-                productId
-            },
-            updateQuery(_, { fetchMoreResult }) {
-                return fetchMoreResult
-            }
-        })
-
-        switch (operation) {
-            case 'INCREMENT':
-                data.product.availability > 0
-                    ? updateAvailability(productId, data.product.availability, 1, 'INCREMENT')
-                    : setCartMessage('Essa há mais lugares para essa viagem :(')
-                break
-
-            case 'DECREMENT':
-                cartItems.find(item => item.product.id === productId).qtd > 1
-                    ? updateAvailability(productId, data.product.availability, (-1), 'DECREMENT')
-                    : setCartMessage('Você precisa ter ao menos um item no carrinho.')
-                break
-
-            case 'REMOVE':
-                const qtd = cartItems.find(item => item.product.id === productId).qtd
-                updateAvailability(productId, data.product.availability, (-qtd), 'REMOVE')
-        }
-    }
-
     return (
         <Fragment>
             {cartItems && cartItems.length > 0 ? true : (<p className='message-alert'>Seu carrinho está vazio :/</p>)}
+            <p className='message-alert'>{cartMessage}</p>
             {cartItems && cartItems.map(item => (
-                <div className="container-cart-item" key={item.product.id}>
-                    <Link to={`/product/${item.product.id}`}>
-                        <h3 className='title-list'>{item.product.title}</h3>
-                    </Link>
-                    <p>Quantidade no carrinho: <span>{item.qtd}</span></p>
-                    <div className="container-button">
-                        <button className='btn btn-add'
-                            onClick={() => handleUpdateClick(item.product.id, 'INCREMENT')}
-                        >
-                            <FaPlus size={20} color={'#ffffff'}></FaPlus>
-                        </button>
-                        <button className='btn btn-dec'
-                            onClick={() => handleUpdateClick(item.product.id, 'DECREMENT')}
-                        >
-                            <FaMinus size={20} color={'#ffffff'}></FaMinus>
-                        </button>
-                        <button className='btn btn-remove'
-                            onClick={() => handleUpdateClick(item.product.id, 'REMOVE')}
-                        >
-                            <FaTrashAlt size={20} color={'#ffffff'}></FaTrashAlt>
-                        </button>
-                    </div>
-                </div>
+                <CartItem key={item.product.id} item={item} setCartMessage={handleMessageState} setEmptyCart={handleEmptyState}></CartItem>
             ))}
             <p className='subtitle'>Total do carrinho</p>
             <p className='price-list'>{totalCart().toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p>
@@ -132,7 +51,6 @@ const Cart: React.FC<CartProps> = () => {
                         &nbsp;Voltar para a página inicial
                     </button>
             </Link>
-            <p className='message-alert'>{cartMessage}</p>
         </Fragment>
     )
 }

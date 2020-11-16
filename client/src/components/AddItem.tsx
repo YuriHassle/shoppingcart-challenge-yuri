@@ -53,7 +53,7 @@ const AdicionarItem: React.FC<ProductDetailProps> = ({ product, setProductMessag
                 })
 
             } else {
-                setProductMessage('Essa há mais lugares para essa viagem :(')
+                setProductMessage('Essa viagem está esgotada :(')
             }
         })
     }
