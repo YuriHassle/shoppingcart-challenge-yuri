@@ -6,15 +6,15 @@ A loja fantástica é uma agência de viagens que te leva para os destinos mais 
 
 ## Tecnologias
 
-### API
--   Node.js + Express.js
--   Mongodb + Mongoose
--   GraphQL + Apollo
+### Server
+- Node.js + Express.js
+- Mongodb + Mongoose
+- GraphQL + Apollo Server
 -	Docker Compose
 
 ### Client
--   React.js + TypeScript
--   GraphQL + Apollo
+- React.js + TypeScript
+- GraphQL + Apollo Client
 
 ## Rodando o projeto
 
