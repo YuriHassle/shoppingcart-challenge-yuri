@@ -2,8 +2,6 @@
 
 A loja fantástica é uma agência de viagens que te leva para os destinos mais mágicos que você pode imaginar. Compre suas passagens com poucos cliques :)
 
-Aplicação desenvolvida para o desafio técnico da **Jusbrasil**.
-
 *Para efetuar uma compra na loja é necessário informar o n. de cartão de crédito:* ***123456789***
 
 ## Tecnologias
