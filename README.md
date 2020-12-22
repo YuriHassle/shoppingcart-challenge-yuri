@@ -43,7 +43,7 @@ Nesta página, basta dar um nome qualquer para a conexão e digitar no campo **c
 No diretório raiz do projeto e com o servidor rodando:
 
 `$ cd client`
-
+`$ npm install`
 `$ npm start`
 
 A página inicial da aplicação será iniciada em: `http://localhost:3000`
